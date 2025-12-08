@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Contratante - RedeDev</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">RedeDev</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-programador.html">Sou Programador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="cadastro-contratante.html">Sou Contratante</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="criar-vaga.html">Criar Vaga</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="form-container">
+            <h2 class="text-center mb-4 text-primary">Cadastro de Contratante</h2>
+
+            <form id="form-contratante">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome do responsável</label>
+                    <input type="text" class="form-control" id="nome" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail corporativo</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="empresa" class="form-label">Nome da empresa</label>
+                    <input type="text" class="form-control" id="empresa" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="cnpj" class="form-label">CNPJ</label>
+                    <input type="text" class="form-control" id="cnpj" placeholder="00.000.000/0000-00" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+            </form>
+
+            <div class="alert alert-info mt-4">
+                <small>Após o cadastro, você receberá um ID para criar suas vagas.</small>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">RedeDev - Conectando talentos</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

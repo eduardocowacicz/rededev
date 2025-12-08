@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Vaga - RedeDev</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">RedeDev</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-programador.html">Sou Programador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-contratante.html">Sou Contratante</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="criar-vaga.html">Criar Vaga</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="form-container">
+            <h2 class="text-center mb-4 text-primary">Criar Nova Vaga</h2>
+
+            <form id="form-vaga">
+                <div class="mb-3">
+                    <label for="contratanteId" class="form-label">ID do Contratante</label>
+                    <input type="number" class="form-control" id="contratanteId" required placeholder="Ex: 1">
+                    <small class="text-muted">Informe o ID recebido no cadastro</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título da vaga</label>
+                    <input type="text" class="form-control" id="titulo" required placeholder="Ex: Desenvolvedor Java Senior">
+                </div>
+
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="descricao" rows="3" required placeholder="Descreva as atividades e responsabilidades..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="requisitos" class="form-label">Requisitos</label>
+                    <textarea class="form-control" id="requisitos" rows="2" required placeholder="Ex: Java 11+, Spring Boot, MySQL, Docker"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="salario" class="form-label">Salário (R$)</label>
+                    <input type="number" class="form-control" id="salario" required placeholder="Ex: 8000">
+                </div>
+
+                <div class="mb-4">
+                    <label for="localizacao" class="form-label">Localização</label>
+                    <input type="text" class="form-control" id="localizacao" required placeholder="Ex: São Paulo - SP ou Remoto">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Criar Vaga</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">RedeDev - Conectando talentos</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
