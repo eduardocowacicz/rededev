@@ -26,4 +26,16 @@ public class ProgramadorService {
     public Optional<Programador> buscarPorId(Long id) {
         return repository.findById(id);
     }
+
+    public Programador login(String email, String senha) {
+        return repository.findByEmailAndSenha(email, senha);
+    }
+
+    public List<Programador> buscarPorCompetencia(String competencia) {
+        return repository.findByCompetenciasContainingIgnoreCase(competencia);
+    }
+
+    public List<Programador> buscar(String termo) {
+        return repository.findByNomeContainingIgnoreCaseOrCompetenciasContainingIgnoreCase(termo, termo);
+    }
 }

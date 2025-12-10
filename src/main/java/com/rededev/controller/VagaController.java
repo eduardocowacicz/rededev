@@ -45,4 +45,9 @@ public class VagaController {
     public ResponseEntity<List<Candidatura>> listarCandidatos(@PathVariable Long id) {
         return ResponseEntity.ok(candidaturaService.buscarPorVaga(id));
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Vaga>> buscarPorTecnologia(@RequestParam String tecnologia) {
+        return ResponseEntity.ok(vagaService.buscarPorTecnologia(tecnologia));
+    }
 }

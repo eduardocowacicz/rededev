@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedeDev - Painel do Contratante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">RedeDev</a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3" id="nomeUsuario"></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <ul class="nav nav-tabs mb-4" id="painelTabs">
+            <li class="nav-item">
+                <button class="nav-link active" data-tab="vagas">Minhas Vagas</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="nova">Criar Vaga</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="perfil">Meu Perfil</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="buscar">Buscar Programadores</button>
+            </li>
+        </ul>
+
+        <div id="vagasTab">
+            <h4 class="mb-4">Minhas Vagas</h4>
+            <div id="listaVagas"></div>
+        </div>
+
+        <div id="novaTab" class="d-none">
+            <h4 class="mb-4">Criar Nova Vaga</h4>
+            <div class="form-container">
+                <div class="mb-3">
+                    <label class="form-label">Título da Vaga</label>
+                    <input type="text" class="form-control" id="vagaTitulo">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <textarea class="form-control" id="vagaDescricao" rows="4"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Requisitos</label>
+                    <textarea class="form-control" id="vagaRequisitos" rows="3"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Salário (R$)</label>
+                        <input type="number" class="form-control" id="vagaSalario">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Localização</label>
+                        <input type="text" class="form-control" id="vagaLocalizacao">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Modalidade</label>
+                        <select class="form-select" id="vagaModalidade">
+                            <option value="Presencial">Presencial</option>
+                            <option value="Remoto">Remoto</option>
+                            <option value="Hibrido">Híbrido</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nível Exigido</label>
+                        <select class="form-select" id="vagaNivel">
+                            <option value="JUNIOR">Júnior</option>
+                            <option value="PLENO">Pleno</option>
+                            <option value="SENIOR">Sênior</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="criarVaga()">Publicar Vaga</button>
+            </div>
+        </div>
+
+        <div id="perfilTab" class="d-none">
+            <h4 class="mb-4">Meu Perfil</h4>
+            <div class="form-container">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="perfilNome">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="perfilEmail" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Empresa</label>
+                    <input type="text" class="form-control" id="perfilEmpresa">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">CNPJ</label>
+                    <input type="text" class="form-control" id="perfilCnpj">
+                </div>
+                <button class="btn btn-primary" onclick="salvarPerfil()">Salvar Alterações</button>
+            </div>
+        </div>
+
+        <div id="buscarTab" class="d-none">
+            <h4 class="mb-4">Buscar Programadores</h4>
+            <div class="mb-4">
+                <div class="input-group" style="max-width: 500px;">
+                    <input type="text" class="form-control" id="buscaTermo" placeholder="Buscar por nome ou competência">
+                    <button class="btn btn-primary" onclick="buscarProgramadores()">Buscar</button>
+                </div>
+            </div>
+            <div id="listaProgramadores" class="row"></div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="modalCandidatos" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Candidatos - <span id="modalVagaTitulo"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="listaCandidatos"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p class="mb-0">RedeDev - Plataforma de Vagas para Programadores</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:8082/api';
+        let usuario = null;
+        let vagaSelecionadaId = null;
+
+        function verificarLogin() {
+            const usuarioStr = localStorage.getItem('usuario');
+            const tipo = localStorage.getItem('tipoUsuario');
+
+            if (!usuarioStr || tipo !== 'contratante') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            usuario = JSON.parse(usuarioStr);
+            document.getElementById('nomeUsuario').textContent = usuario.empresa || usuario.nome;
+        }
+
+        function logout() {
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('tipoUsuario');
+            window.location.href = 'login.html';
+        }
+
+        document.querySelectorAll('#painelTabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#painelTabs button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                document.getElementById('vagasTab').classList.add('d-none');
+                document.getElementById('novaTab').classList.add('d-none');
+                document.getElementById('perfilTab').classList.add('d-none');
+                document.getElementById('buscarTab').classList.add('d-none');
+
+                const tab = this.dataset.tab;
+                document.getElementById(tab + 'Tab').classList.remove('d-none');
+
+                if (tab === 'perfil') {
+                    carregarPerfil();
+                }
+            });
+        });
+
+        async function carregarVagas() {
+            try {
+                const response = await fetch(`${API_BASE}/vagas`);
+                const todasVagas = await response.json();
+
+                const minhasVagas = todasVagas.filter(v => v.contratante && v.contratante.id === usuario.id);
+
+                const container = document.getElementById('listaVagas');
+                container.innerHTML = '';
+
+                if (minhasVagas.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Você ainda não publicou nenhuma vaga.</p>';
+                    return;
+                }
+
+                minhasVagas.forEach(vaga => {
+                    const card = document.createElement('div');
+                    card.className = 'candidato-card';
+                    card.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>${vaga.titulo}</h5>
+                                <p class="mb-2">${vaga.descricao.substring(0, 150)}...</p>
+                                <span class="badge-salario">R$ ${vaga.salario.toLocaleString('pt-BR')}</span>
+                                <span class="badge-localizacao ms-2">${vaga.localizacao}</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="verCandidatos(${vaga.id}, '${vaga.titulo}')">
+                                Ver Candidatos
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar vagas:', error);
+            }
+        }
+
+        async function verCandidatos(vagaId, vagaTitulo) {
+            vagaSelecionadaId = vagaId;
+            document.getElementById('modalVagaTitulo').textContent = vagaTitulo;
+
+            try {
+                const response = await fetch(`${API_BASE}/vagas/${vagaId}/candidatos`);
+                const candidaturas = await response.json();
+
+                const container = document.getElementById('listaCandidatos');
+                container.innerHTML = '';
+
+                if (candidaturas.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Nenhum candidato para esta vaga ainda.</p>';
+                } else {
+                    candidaturas.forEach(cand => {
+                        const prog = cand.programador;
+                        const statusClass = cand.status === 'ACEITA' ? 'badge-aceita' :
+                                           cand.status === 'RECUSADA' ? 'badge-recusada' : 'badge-pendente';
+                        const statusText = cand.status === 'ACEITA' ? 'Aceito' :
+                                          cand.status === 'RECUSADA' ? 'Recusado' : 'Pendente';
+
+                        const card = document.createElement('div');
+                        card.className = 'candidato-card';
+                        card.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5>${prog.nome}</h5>
+                                    <p class="mb-1"><strong>Email:</strong> ${prog.email}</p>
+                                    <p class="mb-1"><strong>Telefone:</strong> ${prog.telefone || 'N/A'}</p>
+                                    <p class="mb-1"><strong>Nível:</strong> ${prog.nivel}</p>
+                                    <p class="mb-1"><strong>Competências:</strong> ${prog.competencias || 'N/A'}</p>
+                                    <p class="mb-0"><strong>Resumo:</strong> ${prog.resumo || 'N/A'}</p>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge ${statusClass} mb-2 d-block">${statusText}</span>
+                                    ${cand.status === 'PENDENTE' ? `
+                                        <button class="btn btn-success btn-sm me-1" onclick="atualizarStatus(${cand.id}, 'ACEITA')">Aceitar</button>
+                                        <button class="btn btn-danger btn-sm" onclick="atualizarStatus(${cand.id}, 'RECUSADA')">Recusar</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+
+                new bootstrap.Modal(document.getElementById('modalCandidatos')).show();
+            } catch (error) {
+                console.error('Erro ao carregar candidatos:', error);
+            }
+        }
+
+        async function atualizarStatus(candidaturaId, status) {
+            try {
+                const response = await fetch(`${API_BASE}/candidaturas/${candidaturaId}?status=${status}`, {
+                    method: 'PUT'
+                });
+
+                if (response.ok) {
+                    const vagaTitulo = document.getElementById('modalVagaTitulo').textContent;
+                    verCandidatos(vagaSelecionadaId, vagaTitulo);
+                } else {
+                    alert('Erro ao atualizar status');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function criarVaga() {
+            const dados = {
+                titulo: document.getElementById('vagaTitulo').value,
+                descricao: document.getElementById('vagaDescricao').value,
+                requisitos: document.getElementById('vagaRequisitos').value,
+                salario: parseFloat(document.getElementById('vagaSalario').value),
+                localizacao: document.getElementById('vagaLocalizacao').value,
+                modalidade: document.getElementById('vagaModalidade').value,
+                nivelExigido: document.getElementById('vagaNivel').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/vagas?contratanteId=${usuario.id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    alert('Vaga publicada com sucesso!');
+                    document.getElementById('vagaTitulo').value = '';
+                    document.getElementById('vagaDescricao').value = '';
+                    document.getElementById('vagaRequisitos').value = '';
+                    document.getElementById('vagaSalario').value = '';
+                    document.getElementById('vagaLocalizacao').value = '';
+                    document.getElementById('vagaModalidade').value = 'Presencial';
+                    document.getElementById('vagaNivel').value = 'JUNIOR';
+
+                    document.querySelector('[data-tab="vagas"]').click();
+                    carregarVagas();
+                } else {
+                    alert('Erro ao publicar vaga');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        function carregarPerfil() {
+            document.getElementById('perfilNome').value = usuario.nome;
+            document.getElementById('perfilEmail').value = usuario.email;
+            document.getElementById('perfilEmpresa').value = usuario.empresa || '';
+            document.getElementById('perfilCnpj').value = usuario.cnpj || '';
+        }
+
+        async function salvarPerfil() {
+            const dados = {
+                id: usuario.id,
+                nome: document.getElementById('perfilNome').value,
+                email: usuario.email,
+                senha: usuario.senha,
+                empresa: document.getElementById('perfilEmpresa').value,
+                cnpj: document.getElementById('perfilCnpj').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/contratantes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    const atualizado = await response.json();
+                    usuario = atualizado;
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    document.getElementById('nomeUsuario').textContent = usuario.empresa || usuario.nome;
+                    alert('Perfil atualizado com sucesso!');
+                } else {
+                    alert('Erro ao atualizar perfil');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function buscarProgramadores() {
+            const termo = document.getElementById('buscaTermo').value.trim();
+            if (!termo) {
+                alert('Digite um nome ou competência para buscar');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/programadores/buscar?termo=${encodeURIComponent(termo)}`);
+                const programadores = await response.json();
+
+                const container = document.getElementById('listaProgramadores');
+                container.innerHTML = '';
+
+                if (programadores.length === 0) {
+                    container.innerHTML = '<div class="col-12"><p class="text-muted">Nenhum programador encontrado.</p></div>';
+                    return;
+                }
+
+                programadores.forEach(prog => {
+                    const card = document.createElement('div');
+                    card.className = 'col-md-6 col-lg-4 mb-4';
+                    card.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${prog.nome}</h5>
+                                <span class="badge bg-primary mb-2">${prog.nivel}</span>
+                                <p class="mb-1"><strong>Email:</strong> ${prog.email}</p>
+                                <p class="mb-1"><strong>Telefone:</strong> ${prog.telefone || 'N/A'}</p>
+                                <p class="mb-2"><strong>Competências:</strong> ${prog.competencias || 'N/A'}</p>
+                                <p class="text-muted">${prog.resumo ? prog.resumo.substring(0, 100) + '...' : 'Sem resumo'}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar programadores:', error);
+            }
+        }
+
+        verificarLogin();
+        carregarVagas();
+    </script>
+</body>
+</html>

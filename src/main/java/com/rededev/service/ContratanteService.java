@@ -21,4 +21,8 @@ public class ContratanteService {
     public Optional<Contratante> buscarPorId(Long id) {
         return repository.findById(id);
     }
+
+    public Contratante login(String email, String senha) {
+        return repository.findByEmailAndSenha(email, senha);
+    }
 }

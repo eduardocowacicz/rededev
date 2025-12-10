@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedeDev - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">RedeDev</a>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="form-container">
+                    <ul class="nav nav-tabs mb-4" id="authTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-tab="login">Entrar</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-tab="cadastro">Criar Conta</button>
+                        </li>
+                    </ul>
+
+                    <div id="loginForm">
+                        <h4 class="mb-4">Entrar</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="loginSenha">
+                        </div>
+                        <div id="loginErro" class="alert alert-danger d-none"></div>
+                        <button class="btn btn-primary w-100" onclick="fazerLogin()">Entrar</button>
+                    </div>
+
+                    <div id="cadastroForm" class="d-none">
+                        <h4 class="mb-4">Criar Conta</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Conta</label>
+                            <select class="form-select" id="cadastroTipo" onchange="mostrarCampos()">
+                                <option value="programador">Programador</option>
+                                <option value="contratante">Contratante</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="cadastroNome">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="cadastroEmail">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="cadastroSenha">
+                        </div>
+
+                        <div id="camposProgramador">
+                            <div class="mb-3">
+                                <label class="form-label">Telefone</label>
+                                <input type="text" class="form-control" id="cadastroTelefone">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Competencias</label>
+                                <input type="text" class="form-control" id="cadastroCompetencias" placeholder="Java, Python, JavaScript...">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Nivel</label>
+                                <select class="form-select" id="cadastroNivel">
+                                    <option value="JUNIOR">Junior</option>
+                                    <option value="PLENO">Pleno</option>
+                                    <option value="SENIOR">Senior</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Resumo</label>
+                                <textarea class="form-control" id="cadastroResumo" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="camposContratante" class="d-none">
+                            <div class="mb-3">
+                                <label class="form-label">Empresa</label>
+                                <input type="text" class="form-control" id="cadastroEmpresa">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CNPJ</label>
+                                <input type="text" class="form-control" id="cadastroCnpj">
+                            </div>
+                        </div>
+
+                        <div id="cadastroErro" class="alert alert-danger d-none"></div>
+                        <div id="cadastroSucesso" class="alert alert-success d-none"></div>
+                        <button class="btn btn-primary w-100" onclick="fazerCadastro()">Criar Conta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p class="mb-0">RedeDev - Plataforma de Vagas para Programadores</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:8082/api';
+
+        document.querySelectorAll('#authTabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#authTabs button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                if (this.dataset.tab === 'login') {
+                    document.getElementById('loginForm').classList.remove('d-none');
+                    document.getElementById('cadastroForm').classList.add('d-none');
+                } else {
+                    document.getElementById('loginForm').classList.add('d-none');
+                    document.getElementById('cadastroForm').classList.remove('d-none');
+                }
+            });
+        });
+
+        function mostrarCampos() {
+            const tipo = document.getElementById('cadastroTipo').value;
+            if (tipo === 'programador') {
+                document.getElementById('camposProgramador').classList.remove('d-none');
+                document.getElementById('camposContratante').classList.add('d-none');
+            } else {
+                document.getElementById('camposProgramador').classList.add('d-none');
+                document.getElementById('camposContratante').classList.remove('d-none');
+            }
+        }
+
+        async function fazerLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginSenha').value;
+            const erroDiv = document.getElementById('loginErro');
+            erroDiv.classList.add('d-none');
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login?email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    localStorage.setItem('tipoUsuario', data.tipo);
+
+                    if (data.tipo === 'programador') {
+                        window.location.href = 'painel-programador.html';
+                    } else {
+                        window.location.href = 'painel-contratante.html';
+                    }
+                } else {
+                    erroDiv.textContent = 'Email ou senha incorretos';
+                    erroDiv.classList.remove('d-none');
+                }
+            } catch (error) {
+                erroDiv.textContent = 'Erro ao conectar com o servidor';
+                erroDiv.classList.remove('d-none');
+            }
+        }
+
+        async function fazerCadastro() {
+            const tipo = document.getElementById('cadastroTipo').value;
+            const erroDiv = document.getElementById('cadastroErro');
+            const sucessoDiv = document.getElementById('cadastroSucesso');
+            erroDiv.classList.add('d-none');
+            sucessoDiv.classList.add('d-none');
+
+            let dados = {
+                nome: document.getElementById('cadastroNome').value,
+                email: document.getElementById('cadastroEmail').value,
+                senha: document.getElementById('cadastroSenha').value
+            };
+
+            if (tipo === 'programador') {
+                dados.telefone = document.getElementById('cadastroTelefone').value;
+                dados.competencias = document.getElementById('cadastroCompetencias').value;
+                dados.nivel = document.getElementById('cadastroNivel').value;
+                dados.resumo = document.getElementById('cadastroResumo').value;
+            } else {
+                dados.empresa = document.getElementById('cadastroEmpresa').value;
+                dados.cnpj = document.getElementById('cadastroCnpj').value;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/${tipo}s`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    sucessoDiv.textContent = 'Conta criada! Faca login para continuar.';
+                    sucessoDiv.classList.remove('d-none');
+                    document.querySelectorAll('#cadastroForm input, #cadastroForm textarea').forEach(el => el.value = '');
+                } else {
+                    erroDiv.textContent = 'Erro ao criar conta';
+                    erroDiv.classList.remove('d-none');
+                }
+            } catch (error) {
+                erroDiv.textContent = 'Erro ao conectar com o servidor';
+                erroDiv.classList.remove('d-none');
+            }
+        }
+
+        if (localStorage.getItem('usuario')) {
+            const tipo = localStorage.getItem('tipoUsuario');
+            if (tipo === 'programador') {
+                window.location.href = 'painel-programador.html';
+            } else {
+                window.location.href = 'painel-contratante.html';
+            }
+        }
+    </script>
+</body>
+</html>

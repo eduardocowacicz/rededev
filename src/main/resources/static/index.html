@@ -11,91 +11,141 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">RedeDev</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Vagas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastro-programador.html">Sou Programador</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastro-contratante.html">Sou Contratante</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="criar-vaga.html">Criar Vaga</a>
-                    </li>
-                </ul>
+            <div>
+                <a class="btn btn-outline-light" href="login.html">Entrar</a>
             </div>
         </div>
     </nav>
 
     <main class="container my-5">
         <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold text-primary">Encontre sua vaga ideal</h1>
-            <p class="lead text-muted">Conectando programadores com as melhores oportunidades</p>
+            <h1 class="display-4 fw-bold text-primary">RedeDev</h1>
+            <p class="lead text-muted">Plataforma de vagas para programadores</p>
         </div>
 
-        <div class="row g-4" id="vagas-container">
-        </div>
-    </main>
-
-    <div class="modal fade" id="vagaModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-titulo"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Empresa:</strong> <span id="modal-empresa"></span></p>
-                    <p><strong>Localização:</strong> <span id="modal-localizacao"></span></p>
-                    <p><strong>Salário:</strong> <span id="modal-salario"></span></p>
-                    <hr>
-                    <h6>Descrição:</h6>
-                    <p id="modal-descricao"></p>
-                    <h6>Requisitos:</h6>
-                    <p id="modal-requisitos"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="btn-candidatar-modal">Candidatar-se</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="candidatarModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Candidatar-se à vaga</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Selecione seu perfil:</label>
-                        <select class="form-select" id="select-programador">
-                            <option value="">Carregando...</option>
-                        </select>
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-5 mb-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary mb-3">Sou Programador</h3>
+                        <p class="card-text">Encontre as melhores vagas de programação e candidate-se às oportunidades que combinam com seu perfil.</p>
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2">Acesse vagas disponíveis</li>
+                            <li class="mb-2">Candidate-se com um clique</li>
+                            <li class="mb-2">Acompanhe suas candidaturas</li>
+                        </ul>
+                        <a href="login.html" class="btn btn-primary">Acessar como Programador</a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="btn-confirmar-candidatura">Confirmar</button>
+            </div>
+            <div class="col-md-5 mb-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary mb-3">Sou Contratante</h3>
+                        <p class="card-text">Publique vagas e encontre os melhores profissionais de programação para sua empresa.</p>
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2">Publique vagas gratuitamente</li>
+                            <li class="mb-2">Receba candidaturas</li>
+                            <li class="mb-2">Gerencie os candidatos</li>
+                        </ul>
+                        <a href="login.html" class="btn btn-primary">Acessar como Contratante</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="text-center">
+            <h4 class="mb-4">Vagas em Destaque</h4>
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="buscaTecnologia" placeholder="Buscar por tecnologia (ex: Java, React, Python)">
+                        <button class="btn btn-primary" onclick="buscarVagas()">Buscar</button>
+                        <button class="btn btn-outline-secondary" onclick="carregarVagasDestaque()">Limpar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4" id="vagasDestaque"></div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
         <p class="mb-0">RedeDev - Conectando talentos</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="app.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:8082/api';
+
+        async function carregarVagasDestaque() {
+            try {
+                const response = await fetch(`${API_BASE}/vagas`);
+                const vagas = await response.json();
+
+                const container = document.getElementById('vagasDestaque');
+                container.innerHTML = '';
+
+                exibirVagas(vagas.slice(0, 6));
+            } catch (error) {
+                console.error('Erro ao carregar vagas:', error);
+            }
+        }
+
+        function exibirVagas(vagas) {
+            const container = document.getElementById('vagasDestaque');
+            container.innerHTML = '';
+
+            if (vagas.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Nenhuma vaga encontrada.</p></div>';
+                return;
+            }
+
+            vagas.forEach(vaga => {
+                const card = document.createElement('div');
+                card.className = 'col-md-6 col-lg-4';
+                card.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">${vaga.titulo}</h5>
+                            <p class="text-muted mb-2">${vaga.contratante ? vaga.contratante.empresa : 'Empresa'}</p>
+                            <span class="badge-salario">R$ ${vaga.salario.toLocaleString('pt-BR')}</span>
+                            <span class="badge-localizacao ms-2">${vaga.localizacao}</span>
+                            ${vaga.modalidade ? `<span class="badge bg-info ms-2">${vaga.modalidade}</span>` : ''}
+                            <p class="card-text mt-3">${vaga.descricao.substring(0, 80)}...</p>
+                            <a href="login.html" class="btn btn-outline-primary btn-sm">Ver mais</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function buscarVagas() {
+            const tecnologia = document.getElementById('buscaTecnologia').value.trim();
+            if (!tecnologia) {
+                carregarVagasDestaque();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/vagas/buscar?tecnologia=${encodeURIComponent(tecnologia)}`);
+                const vagas = await response.json();
+                exibirVagas(vagas);
+            } catch (error) {
+                console.error('Erro ao buscar vagas:', error);
+            }
+        }
+
+        if (localStorage.getItem('usuario')) {
+            const tipo = localStorage.getItem('tipoUsuario');
+            if (tipo === 'programador') {
+                window.location.href = 'painel-programador.html';
+            } else if (tipo === 'contratante') {
+                window.location.href = 'painel-contratante.html';
+            }
+        }
+
+        carregarVagasDestaque();
+    </script>
 </body>
 </html>

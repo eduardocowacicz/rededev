@@ -35,4 +35,12 @@ public class VagaService {
     public Optional<Vaga> buscarPorId(Long id) {
         return vagaRepository.findById(id);
     }
+
+    public List<Vaga> buscarPorTecnologia(String tecnologia) {
+        return vagaRepository.findByRequisitosContainingIgnoreCase(tecnologia);
+    }
+
+    public List<Vaga> buscarPorContratante(Long contratanteId) {
+        return vagaRepository.findByContratanteId(contratanteId);
+    }
 }

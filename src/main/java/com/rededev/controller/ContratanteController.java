@@ -27,4 +27,13 @@ public class ContratanteController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Contratante> login(@RequestParam String email, @RequestParam String senha) {
+        Contratante contratante = service.login(email, senha);
+        if (contratante != null) {
+            return ResponseEntity.ok(contratante);
+        }
+        return ResponseEntity.status(401).build();
+    }
 }

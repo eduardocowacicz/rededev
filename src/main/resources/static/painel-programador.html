@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedeDev - Painel do Programador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">RedeDev</a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3" id="nomeUsuario"></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <ul class="nav nav-tabs mb-4" id="painelTabs">
+            <li class="nav-item">
+                <button class="nav-link active" data-tab="vagas">Vagas Disponíveis</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="candidaturas">Minhas Candidaturas</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="perfil">Meu Perfil</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="competencias">Minhas Competências</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-tab="experiencias">Experiências</button>
+            </li>
+        </ul>
+
+        <div id="vagasTab">
+            <h4 class="mb-4">Vagas Disponíveis</h4>
+            <div class="mb-4">
+                <div class="input-group" style="max-width: 400px;">
+                    <input type="text" class="form-control" id="buscaTecnologia" placeholder="Buscar por tecnologia...">
+                    <button class="btn btn-primary" onclick="buscarVagas()">Buscar</button>
+                    <button class="btn btn-outline-secondary" onclick="carregarVagas()">Limpar</button>
+                </div>
+            </div>
+            <div id="listaVagas" class="row"></div>
+        </div>
+
+        <div id="candidaturasTab" class="d-none">
+            <h4 class="mb-4">Minhas Candidaturas</h4>
+            <div id="listaCandidaturas"></div>
+        </div>
+
+        <div id="perfilTab" class="d-none">
+            <h4 class="mb-4">Meu Perfil</h4>
+            <div class="form-container">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="perfilNome">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="perfilEmail" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefone</label>
+                    <input type="text" class="form-control" id="perfilTelefone">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Competências</label>
+                    <input type="text" class="form-control" id="perfilCompetencias">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nível</label>
+                    <select class="form-select" id="perfilNivel">
+                        <option value="JUNIOR">Júnior</option>
+                        <option value="PLENO">Pleno</option>
+                        <option value="SENIOR">Sênior</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Resumo Profissional</label>
+                    <textarea class="form-control" id="perfilResumo" rows="4"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="salvarPerfil()">Salvar Alterações</button>
+            </div>
+        </div>
+
+        <div id="competenciasTab" class="d-none">
+            <h4 class="mb-4">Minhas Competências</h4>
+            <div class="form-container mb-4">
+                <h6>Adicionar Competência</h6>
+                <div class="row">
+                    <div class="col-md-5 mb-2">
+                        <input type="text" class="form-control" id="novaCompNome" placeholder="Tecnologia (ex: Java, React)">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <select class="form-select" id="novaCompNivel">
+                            <option value="BASICO">Básico</option>
+                            <option value="INTERMEDIARIO">Intermediário</option>
+                            <option value="AVANCADO">Avançado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <button class="btn btn-primary w-100" onclick="adicionarCompetencia()">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="listaCompetencias"></div>
+        </div>
+
+        <div id="experienciasTab" class="d-none">
+            <h4 class="mb-4">Experiências Profissionais</h4>
+            <div class="form-container mb-4">
+                <h6>Adicionar Experiência</h6>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <input type="text" class="form-control" id="novaExpEmpresa" placeholder="Empresa">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <input type="text" class="form-control" id="novaExpCargo" placeholder="Cargo">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" id="novaExpPeriodo" placeholder="Período (ex: 2020 - 2023)">
+                    </div>
+                    <div class="col-md-8 mb-2">
+                        <input type="text" class="form-control" id="novaExpDescricao" placeholder="Descrição">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="adicionarExperiencia()">Adicionar</button>
+            </div>
+            <div id="listaExperiencias"></div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="modalVaga" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalVagaTitulo"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Empresa:</strong> <span id="modalVagaEmpresa"></span></p>
+                    <p><strong>Salário:</strong> <span id="modalVagaSalario"></span></p>
+                    <p><strong>Localização:</strong> <span id="modalVagaLocalizacao"></span></p>
+                    <p><strong>Modalidade:</strong> <span id="modalVagaModalidade"></span></p>
+                    <p><strong>Nível:</strong> <span id="modalVagaNivel"></span></p>
+                    <hr>
+                    <p><strong>Descrição:</strong></p>
+                    <p id="modalVagaDescricao"></p>
+                    <p><strong>Requisitos:</strong></p>
+                    <p id="modalVagaRequisitos"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="btnCandidatar" onclick="candidatar()">Candidatar-se</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p class="mb-0">RedeDev - Plataforma de Vagas para Programadores</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:8082/api';
+        let usuario = null;
+        let vagaSelecionada = null;
+        let minhasCandidaturas = [];
+
+        function verificarLogin() {
+            const usuarioStr = localStorage.getItem('usuario');
+            const tipo = localStorage.getItem('tipoUsuario');
+
+            if (!usuarioStr || tipo !== 'programador') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            usuario = JSON.parse(usuarioStr);
+            document.getElementById('nomeUsuario').textContent = usuario.nome;
+        }
+
+        function logout() {
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('tipoUsuario');
+            window.location.href = 'login.html';
+        }
+
+        document.querySelectorAll('#painelTabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#painelTabs button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                document.getElementById('vagasTab').classList.add('d-none');
+                document.getElementById('candidaturasTab').classList.add('d-none');
+                document.getElementById('perfilTab').classList.add('d-none');
+                document.getElementById('competenciasTab').classList.add('d-none');
+                document.getElementById('experienciasTab').classList.add('d-none');
+
+                const tab = this.dataset.tab;
+                document.getElementById(tab + 'Tab').classList.remove('d-none');
+
+                if (tab === 'candidaturas') {
+                    carregarCandidaturas();
+                } else if (tab === 'perfil') {
+                    carregarPerfil();
+                } else if (tab === 'competencias') {
+                    carregarCompetencias();
+                } else if (tab === 'experiencias') {
+                    carregarExperiencias();
+                }
+            });
+        });
+
+        async function carregarVagas() {
+            try {
+                const [vagasRes, candidaturasRes] = await Promise.all([
+                    fetch(`${API_BASE}/vagas`),
+                    fetch(`${API_BASE}/candidaturas/programador/${usuario.id}`)
+                ]);
+
+                const vagas = await vagasRes.json();
+                minhasCandidaturas = await candidaturasRes.json();
+
+                const vagasJaCandidatou = minhasCandidaturas.map(c => c.vaga.id);
+
+                const container = document.getElementById('listaVagas');
+                container.innerHTML = '';
+
+                vagas.forEach(vaga => {
+                    const jaCandidatou = vagasJaCandidatou.includes(vaga.id);
+                    const card = document.createElement('div');
+                    card.className = 'col-md-6 col-lg-4 mb-4';
+                    card.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${vaga.titulo}</h5>
+                                <p class="text-muted mb-2">${vaga.contratante ? vaga.contratante.empresa : 'Empresa'}</p>
+                                <span class="badge-salario">R$ ${vaga.salario.toLocaleString('pt-BR')}</span>
+                                <span class="badge-localizacao ms-2">${vaga.localizacao}</span>
+                                <p class="card-text mt-3">${vaga.descricao.substring(0, 100)}...</p>
+                                ${jaCandidatou ?
+                                    '<span class="badge bg-success">Já candidatado</span>' :
+                                    `<button class="btn btn-primary btn-sm" onclick="abrirVaga(${vaga.id})">Ver Detalhes</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar vagas:', error);
+            }
+        }
+
+        async function abrirVaga(id) {
+            try {
+                const response = await fetch(`${API_BASE}/vagas/${id}`);
+                vagaSelecionada = await response.json();
+
+                document.getElementById('modalVagaTitulo').textContent = vagaSelecionada.titulo;
+                document.getElementById('modalVagaEmpresa').textContent = vagaSelecionada.contratante ? vagaSelecionada.contratante.empresa : 'N/A';
+                document.getElementById('modalVagaSalario').textContent = `R$ ${vagaSelecionada.salario.toLocaleString('pt-BR')}`;
+                document.getElementById('modalVagaLocalizacao').textContent = vagaSelecionada.localizacao;
+                document.getElementById('modalVagaModalidade').textContent = vagaSelecionada.modalidade || 'N/A';
+                document.getElementById('modalVagaNivel').textContent = vagaSelecionada.nivelExigido || 'N/A';
+                document.getElementById('modalVagaDescricao').textContent = vagaSelecionada.descricao;
+                document.getElementById('modalVagaRequisitos').textContent = vagaSelecionada.requisitos;
+
+                new bootstrap.Modal(document.getElementById('modalVaga')).show();
+            } catch (error) {
+                console.error('Erro ao carregar vaga:', error);
+            }
+        }
+
+        async function candidatar() {
+            try {
+                const response = await fetch(`${API_BASE}/candidaturas?programadorId=${usuario.id}&vagaId=${vagaSelecionada.id}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('Candidatura enviada com sucesso!');
+                    bootstrap.Modal.getInstance(document.getElementById('modalVaga')).hide();
+                    carregarVagas();
+                } else {
+                    alert('Erro ao enviar candidatura');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function carregarCandidaturas() {
+            try {
+                const response = await fetch(`${API_BASE}/candidaturas/programador/${usuario.id}`);
+                const candidaturas = await response.json();
+
+                const container = document.getElementById('listaCandidaturas');
+                container.innerHTML = '';
+
+                if (candidaturas.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Você ainda não se candidatou a nenhuma vaga.</p>';
+                    return;
+                }
+
+                candidaturas.forEach(cand => {
+                    const statusClass = cand.status === 'ACEITA' ? 'badge-aceita' :
+                                       cand.status === 'RECUSADA' ? 'badge-recusada' : 'badge-pendente';
+                    const statusText = cand.status === 'ACEITA' ? 'Aceita' :
+                                      cand.status === 'RECUSADA' ? 'Recusada' : 'Pendente';
+
+                    const card = document.createElement('div');
+                    card.className = 'candidato-card';
+                    card.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>${cand.vaga.titulo}</h5>
+                                <p class="text-muted mb-1">${cand.vaga.contratante ? cand.vaga.contratante.empresa : 'Empresa'}</p>
+                                <p class="mb-0">
+                                    <span class="badge-salario">R$ ${cand.vaga.salario.toLocaleString('pt-BR')}</span>
+                                    <span class="badge-localizacao ms-2">${cand.vaga.localizacao}</span>
+                                </p>
+                            </div>
+                            <span class="badge ${statusClass}">${statusText}</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar candidaturas:', error);
+            }
+        }
+
+        function carregarPerfil() {
+            document.getElementById('perfilNome').value = usuario.nome;
+            document.getElementById('perfilEmail').value = usuario.email;
+            document.getElementById('perfilTelefone').value = usuario.telefone || '';
+            document.getElementById('perfilCompetencias').value = usuario.competencias || '';
+            document.getElementById('perfilNivel').value = usuario.nivel || 'JUNIOR';
+            document.getElementById('perfilResumo').value = usuario.resumo || '';
+        }
+
+        async function salvarPerfil() {
+            const dados = {
+                id: usuario.id,
+                nome: document.getElementById('perfilNome').value,
+                email: usuario.email,
+                senha: usuario.senha,
+                telefone: document.getElementById('perfilTelefone').value,
+                competencias: document.getElementById('perfilCompetencias').value,
+                nivel: document.getElementById('perfilNivel').value,
+                resumo: document.getElementById('perfilResumo').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/programadores`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    const atualizado = await response.json();
+                    usuario = atualizado;
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    document.getElementById('nomeUsuario').textContent = usuario.nome;
+                    alert('Perfil atualizado com sucesso!');
+                } else {
+                    alert('Erro ao atualizar perfil');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function buscarVagas() {
+            const tecnologia = document.getElementById('buscaTecnologia').value.trim();
+            if (!tecnologia) {
+                carregarVagas();
+                return;
+            }
+
+            try {
+                const [vagasRes, candidaturasRes] = await Promise.all([
+                    fetch(`${API_BASE}/vagas/buscar?tecnologia=${encodeURIComponent(tecnologia)}`),
+                    fetch(`${API_BASE}/candidaturas/programador/${usuario.id}`)
+                ]);
+
+                const vagas = await vagasRes.json();
+                minhasCandidaturas = await candidaturasRes.json();
+                exibirVagas(vagas);
+            } catch (error) {
+                console.error('Erro ao buscar vagas:', error);
+            }
+        }
+
+        function exibirVagas(vagas) {
+            const vagasJaCandidatou = minhasCandidaturas.map(c => c.vaga.id);
+            const container = document.getElementById('listaVagas');
+            container.innerHTML = '';
+
+            if (vagas.length === 0) {
+                container.innerHTML = '<div class="col-12"><p class="text-muted">Nenhuma vaga encontrada.</p></div>';
+                return;
+            }
+
+            vagas.forEach(vaga => {
+                const jaCandidatou = vagasJaCandidatou.includes(vaga.id);
+                const card = document.createElement('div');
+                card.className = 'col-md-6 col-lg-4 mb-4';
+                card.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">${vaga.titulo}</h5>
+                            <p class="text-muted mb-2">${vaga.contratante ? vaga.contratante.empresa : 'Empresa'}</p>
+                            <span class="badge-salario">R$ ${vaga.salario.toLocaleString('pt-BR')}</span>
+                            <span class="badge-localizacao ms-2">${vaga.localizacao}</span>
+                            ${vaga.modalidade ? `<span class="badge bg-info ms-2">${vaga.modalidade}</span>` : ''}
+                            <p class="card-text mt-3">${vaga.descricao.substring(0, 100)}...</p>
+                            ${jaCandidatou ?
+                                '<span class="badge bg-success">Já candidatado</span>' :
+                                `<button class="btn btn-primary btn-sm" onclick="abrirVaga(${vaga.id})">Ver Detalhes</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function carregarCompetencias() {
+            try {
+                const response = await fetch(`${API_BASE}/competencias/programador/${usuario.id}`);
+                const competencias = await response.json();
+
+                const container = document.getElementById('listaCompetencias');
+                container.innerHTML = '';
+
+                if (competencias.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Nenhuma competência cadastrada.</p>';
+                    return;
+                }
+
+                competencias.forEach(comp => {
+                    const nivelTexto = comp.nivel === 'BASICO' ? 'Básico' :
+                                      comp.nivel === 'INTERMEDIARIO' ? 'Intermediário' : 'Avançado';
+                    const nivelClass = comp.nivel === 'BASICO' ? 'bg-secondary' :
+                                      comp.nivel === 'INTERMEDIARIO' ? 'bg-warning' : 'bg-success';
+
+                    const card = document.createElement('div');
+                    card.className = 'candidato-card d-flex justify-content-between align-items-center';
+                    card.innerHTML = `
+                        <div>
+                            <strong>${comp.nome}</strong>
+                            <span class="badge ${nivelClass} ms-2">${nivelTexto}</span>
+                        </div>
+                        <button class="btn btn-outline-danger btn-sm" onclick="excluirCompetencia(${comp.id})">Excluir</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar competências:', error);
+            }
+        }
+
+        async function adicionarCompetencia() {
+            const nome = document.getElementById('novaCompNome').value.trim();
+            const nivel = document.getElementById('novaCompNivel').value;
+
+            if (!nome) {
+                alert('Informe o nome da competência');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/competencias?programadorId=${usuario.id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, nivel })
+                });
+
+                if (response.ok) {
+                    document.getElementById('novaCompNome').value = '';
+                    carregarCompetencias();
+                } else {
+                    alert('Erro ao adicionar competência');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function excluirCompetencia(id) {
+            if (!confirm('Deseja excluir esta competência?')) return;
+
+            try {
+                await fetch(`${API_BASE}/competencias/${id}`, { method: 'DELETE' });
+                carregarCompetencias();
+            } catch (error) {
+                alert('Erro ao excluir competência');
+            }
+        }
+
+        async function carregarExperiencias() {
+            try {
+                const response = await fetch(`${API_BASE}/experiencias/programador/${usuario.id}`);
+                const experiencias = await response.json();
+
+                const container = document.getElementById('listaExperiencias');
+                container.innerHTML = '';
+
+                if (experiencias.length === 0) {
+                    container.innerHTML = '<p class="text-muted">Nenhuma experiência cadastrada.</p>';
+                    return;
+                }
+
+                experiencias.forEach(exp => {
+                    const card = document.createElement('div');
+                    card.className = 'candidato-card';
+                    card.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>${exp.cargo}</h5>
+                                <p class="text-muted mb-1">${exp.empresa} | ${exp.periodo}</p>
+                                <p class="mb-0">${exp.descricao || ''}</p>
+                            </div>
+                            <button class="btn btn-outline-danger btn-sm" onclick="excluirExperiencia(${exp.id})">Excluir</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar experiências:', error);
+            }
+        }
+
+        async function adicionarExperiencia() {
+            const empresa = document.getElementById('novaExpEmpresa').value.trim();
+            const cargo = document.getElementById('novaExpCargo').value.trim();
+            const periodo = document.getElementById('novaExpPeriodo').value.trim();
+            const descricao = document.getElementById('novaExpDescricao').value.trim();
+
+            if (!empresa || !cargo) {
+                alert('Informe empresa e cargo');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/experiencias?programadorId=${usuario.id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ empresa, cargo, periodo, descricao })
+                });
+
+                if (response.ok) {
+                    document.getElementById('novaExpEmpresa').value = '';
+                    document.getElementById('novaExpCargo').value = '';
+                    document.getElementById('novaExpPeriodo').value = '';
+                    document.getElementById('novaExpDescricao').value = '';
+                    carregarExperiencias();
+                } else {
+                    alert('Erro ao adicionar experiência');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor');
+            }
+        }
+
+        async function excluirExperiencia(id) {
+            if (!confirm('Deseja excluir esta experiência?')) return;
+
+            try {
+                await fetch(`${API_BASE}/experiencias/${id}`, { method: 'DELETE' });
+                carregarExperiencias();
+            } catch (error) {
+                alert('Erro ao excluir experiência');
+            }
+        }
+
+        verificarLogin();
+        carregarVagas();
+    </script>
+</body>
+</html>

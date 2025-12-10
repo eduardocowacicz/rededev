@@ -25,6 +25,8 @@ public class Programador {
     @Column(length = 1000)
     private String resumo;
 
+    private String senha;
+
     public Programador() {
     }
 
@@ -82,5 +84,13 @@ public class Programador {
 
     public void setResumo(String resumo) {
         this.resumo = resumo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

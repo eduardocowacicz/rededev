@@ -33,4 +33,18 @@ public class ProgramadorController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Programador> login(@RequestParam String email, @RequestParam String senha) {
+        Programador programador = service.login(email, senha);
+        if (programador != null) {
+            return ResponseEntity.ok(programador);
+        }
+        return ResponseEntity.status(401).build();
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Programador>> buscar(@RequestParam String termo) {
+        return ResponseEntity.ok(service.buscar(termo));
+    }
 }

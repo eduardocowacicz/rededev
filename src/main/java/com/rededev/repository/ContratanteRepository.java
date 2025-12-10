@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContratanteRepository extends JpaRepository<Contratante, Long> {
+    Contratante findByEmailAndSenha(String email, String senha);
 }

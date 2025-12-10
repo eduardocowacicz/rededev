@@ -22,7 +22,11 @@ public class Vaga {
 
     private String localizacao;
 
-    @ManyToOne
+    private String modalidade;
+
+    private String nivelExigido;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contratante_id")
     private Contratante contratante;
 
@@ -83,5 +87,21 @@ public class Vaga {
 
     public void setContratante(Contratante contratante) {
         this.contratante = contratante;
+    }
+
+    public String getModalidade() {
+        return modalidade;
+    }
+
+    public void setModalidade(String modalidade) {
+        this.modalidade = modalidade;
+    }
+
+    public String getNivelExigido() {
+        return nivelExigido;
+    }
+
+    public void setNivelExigido(String nivelExigido) {
+        this.nivelExigido = nivelExigido;
     }
 }

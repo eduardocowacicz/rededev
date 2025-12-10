@@ -18,6 +18,8 @@ public class Contratante {
 
     private String cnpj;
 
+    private String senha;
+
     public Contratante() {
     }
 
@@ -59,5 +61,13 @@ public class Contratante {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
