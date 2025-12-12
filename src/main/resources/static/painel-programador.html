@@ -153,6 +153,7 @@
                     <p><strong>Localização:</strong> <span id="modalVagaLocalizacao"></span></p>
                     <p><strong>Modalidade:</strong> <span id="modalVagaModalidade"></span></p>
                     <p><strong>Nível:</strong> <span id="modalVagaNivel"></span></p>
+                    <p><strong>Tipo de Contrato:</strong> <span id="modalVagaTipoContrato"></span></p>
                     <hr>
                     <p><strong>Descrição:</strong></p>
                     <p id="modalVagaDescricao"></p>
@@ -277,6 +278,7 @@
                 document.getElementById('modalVagaLocalizacao').textContent = vagaSelecionada.localizacao;
                 document.getElementById('modalVagaModalidade').textContent = vagaSelecionada.modalidade || 'N/A';
                 document.getElementById('modalVagaNivel').textContent = vagaSelecionada.nivelExigido || 'N/A';
+                document.getElementById('modalVagaTipoContrato').textContent = vagaSelecionada.tipoContrato || 'N/A';
                 document.getElementById('modalVagaDescricao').textContent = vagaSelecionada.descricao;
                 document.getElementById('modalVagaRequisitos').textContent = vagaSelecionada.requisitos;
 

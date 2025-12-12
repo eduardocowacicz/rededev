@@ -7,11 +7,11 @@ INSERT INTO contratantes (nome, email, empresa, cnpj, senha) VALUES
 ('Carlos Oliveira', 'carlos@email.com', 'Tech Corp', '12.345.678/0001-90', '123456'),
 ('Ana Rodrigues', 'ana@email.com', 'Digital Solutions', '98.765.432/0001-10', '123456');
 
-INSERT INTO vagas (titulo, descricao, requisitos, salario, localizacao, modalidade, nivel_exigido, contratante_id) VALUES
-('Desenvolvedor Java Senior', 'Buscamos desenvolvedor Java para atuar em projetos de grande porte utilizando Spring Boot e microsserviços.', 'Java 11+, Spring Boot, JPA, REST APIs, Docker', 12000.00, 'São Paulo - SP', 'Presencial', 'SENIOR', 1),
-('Desenvolvedor Frontend React', 'Vaga para desenvolvedor frontend com foco em React e aplicações SPA.', 'React, TypeScript, CSS, Git', 7000.00, 'Remoto', 'Remoto', 'PLENO', 2),
-('Fullstack Developer', 'Desenvolvedor fullstack para startup em crescimento.', 'Node.js, React, MongoDB, AWS', 9000.00, 'Rio de Janeiro - RJ', 'Hibrido', 'PLENO', 1),
-('Desenvolvedor Python Junior', 'Oportunidade para desenvolvedor iniciante com vontade de aprender.', 'Python, SQL básico, Lógica de programação', 4000.00, 'Curitiba - PR', 'Remoto', 'JUNIOR', 2);
+INSERT INTO vagas (titulo, descricao, requisitos, salario, localizacao, modalidade, nivel_exigido, tipo_contrato, contratante_id) VALUES
+('Desenvolvedor Java Senior', 'Buscamos desenvolvedor Java para atuar em projetos de grande porte utilizando Spring Boot e microsserviços.', 'Java 11+, Spring Boot, JPA, REST APIs, Docker', 12000.00, 'São Paulo - SP', 'Presencial', 'SENIOR', 'CLT', 1),
+('Desenvolvedor Frontend React', 'Vaga para desenvolvedor frontend com foco em React e aplicações SPA.', 'React, TypeScript, CSS, Git', 7000.00, 'Remoto', 'Remoto', 'PLENO', 'PJ', 2),
+('Fullstack Developer', 'Desenvolvedor fullstack para startup em crescimento.', 'Node.js, React, MongoDB, AWS', 9000.00, 'Rio de Janeiro - RJ', 'Hibrido', 'PLENO', 'CLT', 1),
+('Desenvolvedor Python Junior', 'Oportunidade para desenvolvedor iniciante com vontade de aprender.', 'Python, SQL básico, Lógica de programação', 4000.00, 'Curitiba - PR', 'Remoto', 'JUNIOR', 'Estagio', 2);
 
 INSERT INTO competencias (nome, nivel, programador_id) VALUES
 ('Java', 'AVANCADO', 1),

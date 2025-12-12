@@ -84,6 +84,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Contrato</label>
+                    <select class="form-select" id="vagaTipoContrato">
+                        <option value="CLT">CLT</option>
+                        <option value="PJ">PJ</option>
+                        <option value="Estagio">Estágio</option>
+                        <option value="Freelancer">Freelancer</option>
+                    </select>
+                </div>
                 <button class="btn btn-primary" onclick="criarVaga()">Publicar Vaga</button>
             </div>
         </div>
@@ -300,7 +309,8 @@
                 salario: parseFloat(document.getElementById('vagaSalario').value),
                 localizacao: document.getElementById('vagaLocalizacao').value,
                 modalidade: document.getElementById('vagaModalidade').value,
-                nivelExigido: document.getElementById('vagaNivel').value
+                nivelExigido: document.getElementById('vagaNivel').value,
+                tipoContrato: document.getElementById('vagaTipoContrato').value
             };
 
             try {

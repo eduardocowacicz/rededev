@@ -26,6 +26,8 @@ public class Vaga {
 
     private String nivelExigido;
 
+    private String tipoContrato;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contratante_id")
     private Contratante contratante;
@@ -103,5 +105,13 @@ public class Vaga {
 
     public void setNivelExigido(String nivelExigido) {
         this.nivelExigido = nivelExigido;
+    }
+
+    public String getTipoContrato() {
+        return tipoContrato;
+    }
+
+    public void setTipoContrato(String tipoContrato) {
+        this.tipoContrato = tipoContrato;
     }
 }
